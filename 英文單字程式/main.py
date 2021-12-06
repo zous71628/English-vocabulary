@@ -48,7 +48,7 @@ class Effect(ConnectDatabase):
         listlen = int(self.c.count_id(day))
         vocabulary = self.c.shuffle_voc(day, e.shuffle(day))
         for i in range(listlen):
-            print("{0}.".format(i+1),vocabulary[i][1])
+            print("{0}.".format(i+1),vocabulary[i][1:3])
             ans = input("答案: ")
             if ans == vocabulary[i][3]:
                 print("答對")
