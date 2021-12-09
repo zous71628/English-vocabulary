@@ -2,6 +2,7 @@ from database import ConnectDatabase
 import random
 from typing import List
 import os
+import time
 
 
 class BeforeExam(ConnectDatabase):
@@ -15,6 +16,24 @@ class BeforeExam(ConnectDatabase):
         random.shuffle(idcountlist)
         return idcountlist
 
+    def choose_in_up(self):
+        choose = 0
+        c = ConnectDatabase()
+        while True:
+            try:
+                choose = int(input("註冊 1 , 登入 2\n請輸入: "))
+            except ValueError:
+                print("輸入錯誤，請重新輸入")
+                continue
+            if choose == 1:
+                c.sign_up()
+                continue
+            elif choose == 2:
+                c.sign_in()
+                break
+            else:
+                print("輸入錯誤數字，請重新輸入")
+                continue
     def choose_model(self) -> int:  # 選擇模式
         choose = 0
         i = InExam()
@@ -46,6 +65,7 @@ class BeforeExam(ConnectDatabase):
                 continue
         return day
 
+
 class InExam(object):
     def __init__(self):
         super(InExam, self).__init__()
@@ -60,7 +80,10 @@ class InExam(object):
         anslist = []
         alphabet = InExam.listalphabet(self)
         listlen = int(self.c.count_id(day))
-        vocabulary = self.c.shuffle_voc(day, self.b.shuffle(day))
+        # start = time.time()
+        vocabulary = self.c.shuffle_voc(day, self.b.shuffle(day)) #要優化
+        # end = time.time()
+        # print(end - start)
         for i in range(listlen):
             print("{0}.".format(i + 1), vocabulary[i][1:3])  # 題目 [1:3]
 
@@ -94,11 +117,13 @@ class InExam(object):
 
 
 def main():
-    e = BeforeExam()
-    print("英文單字練習程式 v2.0 作者: 黃致瑋", end="\n")
+    b = BeforeExam()
+    c = ConnectDatabase()
+    print("英文單字練習程式 v3.0 作者: 黃致瑋", end="\n")
     print("此程式為簡答題，請輸入選項後的文字，連標點符號都不能少!!", end="\n")
     print("------------------------------------------------")
-    e.choose_model()
+    b.choose_in_up()
+    b.choose_model()
 
 
 if __name__ == "__main__":
