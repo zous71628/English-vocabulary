@@ -16,7 +16,7 @@ class BeforeExam(ConnectDatabase):
         random.shuffle(idcountlist)
         return idcountlist
 
-    def choose_in_up(self):
+    def choose_in_up(self):  #選擇註冊或登入
         choose = 0
         c = ConnectDatabase()
         while True:

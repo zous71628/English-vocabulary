@@ -46,24 +46,24 @@ class ConnectDatabase(object):  # 連結時間 1.27 S
             rows += self.cur.fetchall()
         return rows
 
-    def count_user_id(self) -> str:
+    def count_user_id(self) -> str:  # 計算使用者數量
         self.cur.execute('SELECT COUNT(id) FROM private.user')
         rows = self.cur.fetchall()
         return "".join("%s" % i for i in rows)
 
-    def select_user_name(self, name) -> str:
+    def select_user_name(self, name) -> str:  # 選擇使用者名稱
         self.cur.execute("SELECT * FROM private.user WHERE name = %s ORDER BY id ASC", [name])
         rows = self.cur.fetchall()
         # return "".join("{0}".format(i) for i in rows)
         return rows
 
-    def select_user_name_account(self) -> str:
+    def select_user_name_account(self) -> str:  # 選擇使用者名稱和帳號
         self.cur.execute('SELECT id,name,account FROM private.user ORDER BY id ASC')
         rows = self.cur.fetchall()
         # return "".join("{0}".format(i) for i in rows)
         return rows
 
-    def enter_a_p(self, name, account, password):
+    def enter_a_p(self, name, account, password):  # 輸入使用者、帳號、密碼
         self.cur.execute(
             'SELECT name,account,password FROM private.user WHERE name = %s AND account = %s AND password = %s',
             [name, account, password])
@@ -71,12 +71,12 @@ class ConnectDatabase(object):  # 連結時間 1.27 S
         # return "".join("{0}".format(i) for i in rows)
         return rows
 
-    def sign_up(self):
+    def sign_up(self):  # 註冊
         c = ConnectDatabase()
         id = int(c.count_user_id())
         sna = c.select_user_name_account()
         print("------------------------------------------------")
-        while True:
+        while True:  # 判斷使用者會不會過
             name = input("創建使用者名稱: ")
             if len(name) < 1:
                 print("名稱不能留白")
@@ -86,7 +86,7 @@ class ConnectDatabase(object):  # 連結時間 1.27 S
                 continue
             else:
                 break
-        while True:
+        while True:  # 判斷帳號會不會過
             account = input("創建帳號: ")
             if len(account) < 1:
                 print("帳號不能留白")
@@ -101,7 +101,7 @@ class ConnectDatabase(object):  # 連結時間 1.27 S
                         break
                 else:
                     break
-        while True:
+        while True:  # 判斷密碼會不會過
             password = input("創建密碼: ")
             verification = input("請輸入驗證碼: ")
             if len(password) < 6:
@@ -121,10 +121,10 @@ class ConnectDatabase(object):  # 連結時間 1.27 S
                 break
         self.conn.commit()
 
-    def sign_in(self):  # IndexError
+    def sign_in(self):  # 登入
         c = ConnectDatabase()
         id = int(c.count_user_id())
-        while True:
+        while True:  # 判斷是否有此使用者
             try:
                 name = input("輸入使用者名稱: ")
                 sn = c.select_user_name(name)
@@ -134,7 +134,7 @@ class ConnectDatabase(object):  # 連結時間 1.27 S
             except IndexError:
                 print("沒有此使用者")
                 continue
-            try:
+            try:  # 判斷是否有這些帳號密碼
                 account = input("輸入帳號: ")
                 password = input("輸入密碼: ")
                 eap = c.enter_a_p(name, account, password)
